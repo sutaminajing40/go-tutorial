@@ -16,12 +16,15 @@ func NewTodoUsecase(todoRepo repository.TodoRepository) TodoUsecase {
 	return &todoUsecase{todoRepo: todoRepo}
 }
 
-func (u *todoUsecase) CreateTodo(title string) error {
+func (u *todoUsecase) CreateTodo(title string) (*domain.Todo, error) {
 	if len(strings.TrimSpace(title)) == 0 || len(title) > 100 {
-		return errors.New("タイトルは1文字以上100文字以下である必要があります")
+		return nil, errors.New("タイトルは1文字以上100文字以下である必要があります")
 	}
 	todo := &domain.Todo{Title: title}
-	return u.todoRepo.Create(todo)
+	if err := u.todoRepo.Create(todo); err != nil {
+		return nil, err
+	}
+	return todo, nil
 }
 
 func (u *todoUsecase) GetAllTodos() ([]domain.Todo, error) {
@@ -35,25 +38,31 @@ func (u *todoUsecase) GetTodoByID(id uint) (*domain.Todo, error) {
 	return u.todoRepo.FindByID(id)
 }
 
-func (u *todoUsecase) UpdateTodo(id uint, title string, completed bool) error {
+func (u *todoUsecase) UpdateTodo(id uint, title string, completed bool) (*domain.Todo, error) {
 	if id == 0 {
-		return errors.New("IDは1以上である必要があります")
+		return nil, errors.New("IDは1以上である必要があります")
 	}
 	if len(strings.TrimSpace(title)) == 0 || len(title) > 100 {
-		return errors.New("タイトルは1文字以上100文字以下である必要があります")
+		return nil, errors.New("タイトルは1文字以上100文字以下である必要があります")
 	}
 	todo, err := u.todoRepo.FindByID(id)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	todo.Title = title
 	todo.Completed = completed
-	return u.todoRepo.Update(todo)
+	if err := u.todoRepo.Update(todo); err != nil {
+		return nil, err
+	}
+	return todo, nil
 }
 
 func (u *todoUsecase) DeleteTodo(id uint) error {
 	if id == 0 {
 		return errors.New("IDは1以上である必要があります")
+	}
+	if _, err := u.todoRepo.FindByID(id); err != nil {
+		return err
 	}
 	return u.todoRepo.Delete(id)
 }
