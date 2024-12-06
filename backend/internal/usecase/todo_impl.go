@@ -2,8 +2,8 @@ package usecase
 
 import (
 	"errors"
-	"go-tutorial/internal/domain"
-	"go-tutorial/internal/repository"
+	"go-tutorial/backend/internal/domain"
+	"go-tutorial/backend/internal/repository"
 	"strings"
 )
 

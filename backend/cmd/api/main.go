@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
-	"go-tutorial/internal/handler"
-	"go-tutorial/internal/repository"
-	"go-tutorial/internal/usecase"
-	config "go-tutorial/pkg/database"
+	"go-tutorial/backend/internal/handler"
+	"go-tutorial/backend/internal/repository"
+	"go-tutorial/backend/internal/usecase"
+	config "go-tutorial/backend/pkg/database"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"

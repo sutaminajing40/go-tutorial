@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"go-tutorial/internal/usecase"
+	"go-tutorial/backend/internal/usecase"
 
 	"github.com/labstack/echo/v4"
 )
