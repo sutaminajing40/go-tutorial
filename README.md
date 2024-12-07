@@ -55,8 +55,18 @@ HTTP リクエストの受け付けとレスポンスの整形を担当します
 
 ## 起動方法
 
+### バックエンド
+
 ```
 go run backend/cmd/api/main.go
+```
+
+### フロントエンド
+
+```
+cd frontend
+npm install
+npm run dev
 ```
 
 ## API ドキュメント
