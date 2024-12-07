@@ -5,6 +5,7 @@ import { Todo } from '../types/todo'
 import { getTodos, createTodo, updateTodo, deleteTodo } from '../utils/api'
 import LoadingSpinner from './LoadingSpinner'
 import ErrorMessage from './ErrorMessage'
+import { AxiosError } from 'axios'
 
 export default function TodoApp() {
   const [todos, setTodos] = useState<Todo[]>([])
@@ -22,7 +23,8 @@ export default function TodoApp() {
       setTodos(Array.isArray(fetchedTodos) ? fetchedTodos : [])
       setError(null)
     } catch (err) {
-      setError(err as string)
+      const error = err as AxiosError<{ error: string }>
+      setError(error.response?.data?.error || 'タスクの取得に失敗しました')
       setTodos([])
     } finally {
       setIsLoading(false)
@@ -34,7 +36,8 @@ export default function TodoApp() {
       const newTodo = await createTodo(title)
       setTodos([...todos, newTodo])
     } catch (err) {
-      setError(err as string)
+      const error = err as AxiosError<{ error: string }>
+      setError(error.response?.data?.error || 'タスクの追加に失敗しました')
     }
   }
 
@@ -42,20 +45,22 @@ export default function TodoApp() {
     try {
       const todoToUpdate = todos.find(todo => todo.id === id)
       if (todoToUpdate) {
-        const updatedTodo = await updateTodo(id, { completed: !todoToUpdate.completed })
+        const updatedTodo = await updateTodo(id, todoToUpdate.title, !todoToUpdate.completed)
         setTodos(todos.map(todo => todo.id === id ? updatedTodo : todo))
       }
     } catch (err) {
-      setError(err as string)
+      const error = err as AxiosError<{ error: string }>
+      setError(error.response?.data?.error || 'タスクの更新に失敗しました')
     }
   }
 
   const handleEditTodo = async (id: number, newTitle: string) => {
     try {
-      const updatedTodo = await updateTodo(id, { title: newTitle })
+      const updatedTodo = await updateTodo(id, newTitle, todos.find(todo => todo.id === id)?.completed || false)
       setTodos(todos.map(todo => todo.id === id ? updatedTodo : todo))
     } catch (err) {
-      setError(err as string)
+      const error = err as AxiosError<{ error: string }>
+      setError(error.response?.data?.error || 'タスクの更新に失敗しました')
     }
   }
 
@@ -64,7 +69,8 @@ export default function TodoApp() {
       await deleteTodo(id)
       setTodos(todos.filter(todo => todo.id !== id))
     } catch (err) {
-      setError(err as string)
+      const error = err as AxiosError<{ error: string }>
+      setError(error.response?.data?.error || 'タスクの削除に失敗しました')
     }
   }
 
@@ -89,4 +95,3 @@ export default function TodoApp() {
     </div>
   )
 }
-

@@ -24,9 +24,11 @@ export const createTodo = async (title: string): Promise<Todo> => {
 
 export const updateTodo = async (
   id: number,
-  updates: Partial<Todo>
+  title: string,
+  completed: boolean
 ): Promise<Todo> => {
-  const response = await api.put<Todo>(`/todos/${id}`, updates);
+  console.log("updateTodo", id, title, completed);
+  const response = await api.put<Todo>(`/todos/${id}`, { title, completed });
   return response.data;
 };
 
