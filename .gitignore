@@ -1,4 +1,13 @@
+# 環境変数
 .env.local
 .env.prod
 
+# プロンプト
 prompts/
+
+# バックエンド
+
+
+# フロントエンド
+frontend/node_modules/*
+frontend/dist/*

@@ -58,3 +58,35 @@ HTTP リクエストの受け付けとレスポンスの整形を担当します
 ```
 go run backend/cmd/api/main.go
 ```
+
+## API ドキュメント
+
+### API エンドポイント一覧
+
+ベース URL: /api
+
+### TODO 操作
+
+| メソッド | エンドポイント | 説明                   | リクエスト                                  | レスポンス                            |
+| -------- | -------------- | ---------------------- | ------------------------------------------- | ------------------------------------- |
+| POST     | /todos         | TODO を作成            | `{ "title": string }`                       | TODO object                           |
+| GET      | /todos         | 全 TODO を取得         | -                                           | TODO objects array                    |
+| GET      | /todos/:id     | 指定 ID の TODO を取得 | -                                           | TODO object                           |
+| PUT      | /todos/:id     | TODO を更新            | `{ "title": string, "completed": boolean }` | TODO object                           |
+| DELETE   | /todos/:id     | TODO を削除            | -                                           | `{ "message": string, "id": number }` |
+
+### レスポンス形式（TODO object）
+
+{
+"id": number,
+"title": string,
+"completed": boolean,
+"created_at": string,
+"updated_at": string
+}
+
+### エラーレスポンス
+
+{
+"error": string
+}
