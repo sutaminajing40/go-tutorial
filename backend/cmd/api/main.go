@@ -6,12 +6,22 @@ import (
 	"go-tutorial/backend/internal/repository"
 	"go-tutorial/backend/internal/usecase"
 	config "go-tutorial/backend/pkg/database"
+	"os"
 
+	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
 
 func main() {
+	// 環境変数の読み込み
+	env := os.Getenv("GO_ENV")
+	if env == "" || env == "local" {
+		if err := godotenv.Load(".env.local"); err != nil {
+			fmt.Println("Warning: .env.local file not found")
+		}
+	}
+
 	// データベース接続
 	db, err := config.InitDB()
 	if err != nil {
@@ -44,6 +54,7 @@ func main() {
 	}
 
 	// サーバーの起動
-	fmt.Println("サーバーを起動します...")
-	e.Logger.Fatal(e.Start(":8080"))
+	port := os.Getenv("SERVER_PORT")
+	fmt.Printf("サーバーを起動します... ポート: %s\n", port)
+	e.Logger.Fatal(e.Start(":" + port))
 }
