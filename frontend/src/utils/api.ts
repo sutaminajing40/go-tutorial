@@ -1,7 +1,8 @@
 import axios from "axios";
 import { Todo } from "../types/todo";
+import { getApiBaseUrl } from "../config/env";
 
-const API_BASE_URL = "http://localhost:8080/api";
+const API_BASE_URL = getApiBaseUrl();
 
 export const api = axios.create({
   baseURL: API_BASE_URL,
