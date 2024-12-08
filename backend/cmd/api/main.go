@@ -17,8 +17,13 @@ func main() {
 	// 環境変数の読み込み
 	env := os.Getenv("GO_ENV")
 	if env == "" || env == "local" {
-		if err := godotenv.Load(".env.local"); err != nil {
-			fmt.Println("Warning: .env.local file not found")
+		// 本番環境用の.envを先に試す
+		err := godotenv.Load(".env")
+		if err != nil {
+			// 開発環境用の.env.localを試す
+			if err := godotenv.Load(".env.local"); err != nil {
+				fmt.Println("Warning: No .env or .env.local file found")
+			}
 		}
 	}
 
