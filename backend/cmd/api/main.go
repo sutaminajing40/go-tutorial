@@ -1,34 +1,23 @@
 package main
 
 import (
+	env "backend/config"
+	"backend/internal/handler"
+	"backend/internal/repository"
+	"backend/internal/usecase"
+	dbconfig "backend/pkg/database"
 	"fmt"
-	"go-tutorial/backend/internal/handler"
-	"go-tutorial/backend/internal/repository"
-	"go-tutorial/backend/internal/usecase"
-	config "go-tutorial/backend/pkg/database"
-	"os"
 
-	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
 
 func main() {
-	// 環境変数の読み込み
-	env := os.Getenv("GO_ENV")
-	if env == "" || env == "local" {
-		// 本番環境用の.envを先に試す
-		err := godotenv.Load(".env")
-		if err != nil {
-			// 開発環境用の.env.localを試す
-			if err := godotenv.Load(".env.local"); err != nil {
-				fmt.Println("Warning: No .env or .env.local file found")
-			}
-		}
-	}
+	// 設定の読み込み
+	cfg := env.Load()
 
 	// データベース接続
-	db, err := config.InitDB()
+	db, err := dbconfig.InitDB()
 	if err != nil {
 		panic("データベース接続に失敗しました: " + err.Error())
 	}
@@ -59,7 +48,7 @@ func main() {
 	}
 
 	// サーバーの起動
-	port := os.Getenv("SERVER_PORT")
+	port := cfg.Port
 	fmt.Printf("サーバーを起動します... ポート: %s\n", port)
 	e.Logger.Fatal(e.Start(":" + port))
 }

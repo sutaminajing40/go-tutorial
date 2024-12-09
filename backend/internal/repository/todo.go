@@ -1,6 +1,6 @@
 package repository
 
-import "go-tutorial/backend/internal/domain"
+import "backend/internal/domain"
 
 // TodoRepository データベース操作のインターフェース
 type TodoRepository interface {

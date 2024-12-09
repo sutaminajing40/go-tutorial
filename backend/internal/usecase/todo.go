@@ -1,6 +1,6 @@
 package usecase
 
-import "go-tutorial/backend/internal/domain"
+import "backend/internal/domain"
 
 // TodoUsecase ビジネスロジックのインターフェース
 type TodoUsecase interface {

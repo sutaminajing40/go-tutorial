@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"go-tutorial/backend/internal/domain"
+	"backend/internal/domain"
 
 	"gorm.io/gorm"
 )
