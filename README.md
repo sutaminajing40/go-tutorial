@@ -58,7 +58,8 @@ HTTP リクエストの受け付けとレスポンスの整形を担当します
 ### バックエンド
 
 ```
-go run backend/cmd/api/main.go
+cd backend
+go run cmd/api/main.go
 ```
 
 ### フロントエンド
