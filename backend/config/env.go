@@ -10,12 +10,14 @@ import (
 type Config struct {
 	Port     string
 	DBSource string
-	// 他の設定項目をここに追加
 }
 
 func Load() *Config {
-	if err := godotenv.Load(); err != nil {
-		log.Printf("Warning: .env file not found: %v", err)
+	// .env.localが存在する場合のみ読み込む
+	if _, err := os.Stat(".env.local"); err == nil {
+		if err := godotenv.Load(".env.local"); err != nil {
+			log.Printf("Warning: Failed to load .env.local: %v", err)
+		}
 	}
 
 	return &Config{
